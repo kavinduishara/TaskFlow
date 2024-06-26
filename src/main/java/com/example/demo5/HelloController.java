@@ -64,8 +64,7 @@ public class HelloController implements Initializable {
     }
 
     private void when() {
-        complete=0;
-        total=0;
+
         LocalDate datePickerValue = datePicker.getValue();
         String day=datePickerValue.getDayOfWeek().toString().toLowerCase();
         theday.setText("add "+day+" schedule");
@@ -91,6 +90,11 @@ public class HelloController implements Initializable {
         startcol.setCellValueFactory(new PropertyValueFactory<>("starts"));
         status.setCellValueFactory(new PropertyValueFactory<>("actions"));
 
+        addtotable();
+    }
+    public void addtotable(){
+        complete=0;
+        total=0;
         List<String> list = DataStore.readDate(datePicker.getValue().toString());
 
         taskData.clear();
@@ -114,8 +118,17 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    protected void daily(ActionEvent event) {
-        // Handle daily task addition
+    protected void weekday() {
+        String d=datePicker.getValue().getDayOfWeek().toString().toLowerCase();
+        List<String> list = DataStore.readWeekDayDate(d.substring(0,1).toUpperCase()+d.substring(1));
+        List<String> list2=new ArrayList<>();
+        list.forEach((line)->{
+            line=line+",incomplete";
+            list2.add(line);
+        });
+
+        DataStore.write(list2,datePicker.getValue().toString());
+        addtotable();
     }
 
     @FXML

@@ -11,7 +11,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,7 +18,6 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class weekshcedulecontroller {
 
@@ -55,16 +53,16 @@ public class weekshcedulecontroller {
             String durationText = task.getDuration();
             String endsText = task.getEndh().getValue()+":"+task.getEndm().getValue();
             String startText = task.getStarth().getValue()+":"+task.getStartm().getValue();
-            list.add(taskText + "," + startText + "," + endsText + "," + durationText + ",incomplete");
+            list.add(taskText + "," + startText + "," + endsText + "," + durationText);
         }
-        DataStore.write(list, date.get());
+        DataStore.writeweek(list, date.get());
         showMessage("Saved");
     }
 
     @FXML
     public void initialize() {
+        setDate("Monday");
         date.addListener((observable, oldValue, newValue) -> {
-            System.out.println(date.getValue());
             getdata(date.getValue());
         });
 
@@ -81,7 +79,7 @@ public class weekshcedulecontroller {
     public void getdata(String file) {
         List<String> list = null;
 
-        list = DataStore.readDate(file);
+        list = DataStore.readWeekDayDate(file);
 
         if (list == null) {
             return;
@@ -107,7 +105,6 @@ public class weekshcedulecontroller {
 
     @FXML
     protected void delete() {
-        System.out.println(date);
         int selectedIndex = dailyTable.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
             dailyTable.getItems().remove(selectedIndex);
@@ -157,14 +154,11 @@ public class weekshcedulecontroller {
         LocalTime startTime = LocalTime.of(starth, startm);
         LocalTime endTime = LocalTime.of(endh, endm);
 
-        // Calculate the duration between the two times
         Duration duration = Duration.between(startTime, endTime);
 
-        // Get the difference in hours and minutes
         long hours = duration.toHours();
         long minutes = duration.toMinutes() % 60;
 
-        // Update the duration property
         task.setDuration(hours + ":" + minutes);
     }
     private void showMessage(String message) {
@@ -173,5 +167,11 @@ public class weekshcedulecontroller {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    @FXML
+    protected void daychanged(ActionEvent event){
+        save();
+        taskData.clear();
+        setDate(((Button)event.getSource()).getText());
     }
 }

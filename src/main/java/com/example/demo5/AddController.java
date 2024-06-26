@@ -62,6 +62,7 @@ public class AddController {
         showMessage("Saved");
     }
 
+
     @FXML
     public void initialize() {
         date.addListener((observable, oldValue, newValue) -> {
@@ -136,6 +137,18 @@ public class AddController {
     protected void cancel(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    protected void changeWeekSchedule(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("weekschedule.fxml"));
             Scene scene = new Scene(loader.load());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);

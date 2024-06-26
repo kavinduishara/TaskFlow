@@ -62,6 +62,6 @@
         <Label layoutX="14.0" layoutY="59.0" text="tasks progress" />
         <Label fx:id="progress" layoutX="799.0" layoutY="59.0" text="Label" AnchorPane.rightAnchor="14.0" />
         <Button fx:id="current" layoutX="344.0" layoutY="545.0" mnemonicParsing="false" onAction="#current" text="Change Schedule" AnchorPane.bottomAnchor="10.0" />
-        <Button fx:id="theday" layoutX="747.0" layoutY="18.0" mnemonicParsing="false" onAction="#daily" text="Add Daily Routine" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="18.0" />
+        <Button fx:id="theday" layoutX="747.0" layoutY="18.0" mnemonicParsing="false" onAction="#weekday" text="Add Daily Routine" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="18.0" />
     </children>
 </AnchorPane>
