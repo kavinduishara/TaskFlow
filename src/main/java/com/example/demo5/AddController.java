@@ -20,6 +20,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class AddController {
 
@@ -41,6 +42,7 @@ public class AddController {
     protected TableColumn<Tasks, Spinner<Integer>> startm;
     @FXML
     protected TableColumn<Tasks, TextField> taskcol;
+    protected Boolean changed=false;
 
     ObservableList<Tasks> taskData = FXCollections.observableArrayList();
 
@@ -59,14 +61,12 @@ public class AddController {
             list.add(taskText + "," + startText + "," + endsText + "," + durationText + ",incomplete");
         }
         DataStore.write(list, date.get());
-        showMessage("Saved");
     }
 
 
     @FXML
     public void initialize() {
         date.addListener((observable, oldValue, newValue) -> {
-            System.out.println(date.getValue());
             getdata(date.getValue());
         });
 
@@ -97,7 +97,12 @@ public class AddController {
             Spinner<Integer> endHourSpinner = new Spinner<>(0, 23, Integer.parseInt(ends[0]));
             Spinner<Integer> endMinuteSpinner = new Spinner<>(0, 59, Integer.parseInt(ends[1]));
 
-            Tasks newTask = new Tasks(new TextField(line[0]),startHourSpinner, startMinuteSpinner, endHourSpinner, endMinuteSpinner, line[3]);
+            TextField task=new TextField(line[0]);
+            task.textProperty().addListener((observableValue, string, t1) -> {
+                changed=true;
+            } );
+
+            Tasks newTask = new Tasks(task,startHourSpinner, startMinuteSpinner, endHourSpinner, endMinuteSpinner, line[3]);
             taskData.add(newTask);
 
             addEvents(startHourSpinner, newTask);
@@ -109,7 +114,6 @@ public class AddController {
 
     @FXML
     protected void delete() {
-        System.out.println(date);
         int selectedIndex = dailyTable.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
             dailyTable.getItems().remove(selectedIndex);
@@ -122,8 +126,12 @@ public class AddController {
         Spinner<Integer> startMinuteSpinner = new Spinner<>(0, 59, 0);
         Spinner<Integer> endHourSpinner = new Spinner<>(0, 23, 0);
         Spinner<Integer> endMinuteSpinner = new Spinner<>(0, 59, 0);
+        TextField task=new TextField();
+        task.textProperty().addListener((observableValue, string, t1) -> {
+            changed=true;
+        } );
 
-        Tasks newTask = new Tasks(new TextField(),startHourSpinner, startMinuteSpinner, endHourSpinner, endMinuteSpinner, "");
+        Tasks newTask = new Tasks(task,startHourSpinner, startMinuteSpinner, endHourSpinner, endMinuteSpinner, "");
         taskData.add(newTask);
 
         addEvents(startHourSpinner, newTask);
@@ -136,6 +144,28 @@ public class AddController {
     @FXML
     protected void cancel(ActionEvent event) {
         try {
+            if (changed){
+                ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+                ButtonType dontSaveButtonType = new ButtonType("Don't Save", ButtonBar.ButtonData.NO);
+                ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Save Changes");
+                alert.setHeaderText("Do you want to save changes?");
+                alert.setContentText("Choose your option.");
+
+                alert.getButtonTypes().setAll(saveButtonType, dontSaveButtonType, cancelButtonType);
+
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.isPresent()) {
+                    if (result.get() == saveButtonType) {
+                        save();
+                    } else if (result.get() == cancelButtonType) {
+                        return;
+                    }
+                }
+            }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
             Scene scene = new Scene(loader.load());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -152,6 +182,8 @@ public class AddController {
             Scene scene = new Scene(loader.load());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
+            weekshcedulecontroller weekshcedulecontroller = loader.getController();
+            weekshcedulecontroller.setDate("Monday");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -171,21 +203,12 @@ public class AddController {
         LocalTime startTime = LocalTime.of(starth, startm);
         LocalTime endTime = LocalTime.of(endh, endm);
 
-        // Calculate the duration between the two times
         Duration duration = Duration.between(startTime, endTime);
 
-        // Get the difference in hours and minutes
         long hours = duration.toHours();
         long minutes = duration.toMinutes() % 60;
 
-        // Update the duration property
         task.setDuration(hours + ":" + minutes);
-    }
-    private void showMessage(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        changed=true;
     }
 }

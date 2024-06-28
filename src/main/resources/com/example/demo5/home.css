@@ -1,0 +1,115 @@
+.root {
+    -fx-background-color: #21D992; /* Reptile Green */
+}
+
+#datelabel {
+    -fx-font-size: 16px;
+    -fx-text-fill: #105A45; /* Darker shade of Reptile Green */
+    -fx-alignment: center;
+    -fx-padding: 10px;
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #105A45; /* Darker shade of Reptile Green */
+}
+
+#welcomeText {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0C3E31; /* Even darker shade of Reptile Green */
+}
+
+#taskprogress {
+    -fx-accent: #17C380; /* Slightly lighter shade of Reptile Green */
+}
+
+
+
+Button {
+    -fx-background-color: #17C380; /* Slightly lighter shade of Reptile Green */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+Button:hover {
+    -fx-background-color: #1ACD8E; /* Slightly lighter and brighter shade of Reptile Green */
+}
+
+.progress-bar > .bar {
+    -fx-background-color: #17C380; /* Slightly lighter shade of Reptile Green */
+}
+
+.progress-bar > .track {
+    -fx-background-color: #B2EFD9; /* Light shade of Reptile Green */
+}/* DatePicker styles */
+ .date-picker {
+     -fx-background-color: #77D1A9; /* Medium shade of Reptile Green */
+     -fx-text-fill: #0C3E31; /* Dark text color */
+ }
+
+ .date-picker:hover {
+     -fx-background-color: #1ACD8E; /* Slightly lighter and brighter shade of Reptile Green */
+ }
+
+ .date-picker .text-field {
+     -fx-text-fill: #0C3E31; /* Dark text color */
+ }
+
+ .date-picker .arrow-button .arrow {
+     -fx-background-color: #17C380; /* Slightly lighter shade of Reptile Green */
+ }
+
+ .date-picker .popup {
+     -fx-background-color: #B2EFD9; /* Light shade of Reptile Green */
+ }
+
+ .date-picker .cell {
+     -fx-text-fill: #105A45; /* Darker shade of Reptile Green */
+ }
+
+ .date-picker .cell:hover {
+     -fx-background-color: #1ACD8E; /* Slightly lighter and brighter shade of Reptile Green */
+     -fx-text-fill: white;
+ }
+
+ .date-picker .cell:selected {
+     -fx-background-color: #105A45; /* Darker shade of Reptile Green */
+     -fx-text-fill: white;
+ }
+
+ /* Table styles */
+ .table-view {
+     -fx-background-color: #B2EFD9; /* Light shade of Reptile Green */
+     -fx-border-color: #89E1B5; /* Light Green */
+     -fx-table-cell-border-color: transparent;
+     -fx-padding: 10px;
+ }
+
+ .table-view .column-header {
+     -fx-background-color: #77D1A9; /* Medium shade of Reptile Green */
+     -fx-text-fill: #0C3E31; /* Dark text color */
+     -fx-font-weight: bold;
+ }
+
+ .table-view .cell {
+     -fx-background-color: #D6FAF1; /* Lighter shade of Reptile Green */
+     -fx-text-fill: #0C3E31; /* Dark text color */
+ }
+
+ .table-view .cell:selected {
+     -fx-background-color: #17C380; /* Slightly lighter shade of Reptile Green */
+     -fx-text-fill: white;
+ }
+
+
+ .table-view .row {
+     -fx-padding: 5px;
+ }
+/* style.css */
+
+CheckBox {
+    -fx-mark-color: #21D992; /* Reptile Green */
+    -fx-mark-background-color: #21D992; /* Reptile Green */
+    -fx-box-border: #21D992; /* Reptile Green */
+}

@@ -122,6 +122,14 @@ public class HelloController implements Initializable {
         String d=datePicker.getValue().getDayOfWeek().toString().toLowerCase();
         List<String> list = DataStore.readWeekDayDate(d.substring(0,1).toUpperCase()+d.substring(1));
         List<String> list2=new ArrayList<>();
+        if (list==null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("set "+d+" time table!");
+            alert.showAndWait();
+            return;
+        }
         list.forEach((line)->{
             line=line+",incomplete";
             list2.add(line);

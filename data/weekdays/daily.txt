@@ -1,3 +1,0 @@
-break first,7.30,8.00,0.30
-break first,7.30,8.00,0.30
-break first,7.30,8.00,0.30

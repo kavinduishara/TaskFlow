@@ -5,8 +5,9 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="537.0" prefWidth="841.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo5.AddController">
+<AnchorPane prefHeight="537.0" prefWidth="841.0" stylesheets="@addtask.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo5.AddController">
    <children>
        <TableView fx:id="dailyTable" editable="true" layoutX="10.0" layoutY="14.0" AnchorPane.bottomAnchor="36.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
            <columns>
@@ -27,11 +28,15 @@
                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
            </columnResizePolicy>
        </TableView>
-      <Button layoutX="395.0" layoutY="501.0" mnemonicParsing="false" onAction="#save" text="Save" AnchorPane.bottomAnchor="10.0" />
-      <Button layoutX="497.0" layoutY="501.0" mnemonicParsing="false" onAction="#cancel" text="Back" AnchorPane.bottomAnchor="10.0" />
-      <Button layoutX="242.0" layoutY="501.0" mnemonicParsing="false" onAction="#addtask" text="Add new task" AnchorPane.bottomAnchor="10.0" />
-      <Label fx:id="title" layoutX="1.0" layoutY="25.0" prefHeight="18.0" prefWidth="454.0" text="Label" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-      <Button fx:id="delete" layoutX="590.0" layoutY="499.0" mnemonicParsing="false" onAction="#delete" text="delete" AnchorPane.bottomAnchor="10.0" />
-      <Button layoutX="749.0" layoutY="22.0" mnemonicParsing="false" onAction="#changeWeekSchedule" text="Change week routine" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="22.0" />
+      <Label fx:id="title" contentDisplay="CENTER" layoutX="1.0" layoutY="25.0" prefHeight="18.0" prefWidth="454.0" text="Label" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <Button layoutX="749.0" layoutY="22.0" mnemonicParsing="false" onAction="#changeWeekSchedule" text="Change week routine" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="15.0" />
+      <HBox alignment="CENTER" layoutX="81.0" layoutY="514.0" prefHeight="37.0" prefWidth="200.0" spacing="20.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#save" text="Save" />
+            <Button mnemonicParsing="false" onAction="#cancel" text="Back" />
+            <Button mnemonicParsing="false" onAction="#addtask" text="Add new task" />
+            <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" text="delete" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

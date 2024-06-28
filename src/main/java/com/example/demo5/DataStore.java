@@ -53,7 +53,6 @@ public class DataStore {
         return data;
     }
 protected static List<String> readWeekDayDate(String day){
-    System.out.println(day);
         String fileparth="data/weekdays/"+day+".txt";
         File file=new File(fileparth);
         List<String> data = new ArrayList<>();
@@ -72,8 +71,5 @@ protected static List<String> readWeekDayDate(String day){
     }
 
     public static void main(String[] args) {
-        String k="monday";
-        k=k.substring(0,1).toUpperCase()+k.substring(1);
-        System.out.println(k);
     }
 }

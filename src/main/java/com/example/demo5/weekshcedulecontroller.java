@@ -18,6 +18,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class weekshcedulecontroller {
 
@@ -38,6 +39,8 @@ public class weekshcedulecontroller {
     protected TableColumn<Tasks, Spinner<Integer>> startm;
     @FXML
     protected TableColumn<Tasks, TextField> taskcol;
+    protected Boolean changed=false;
+    private Button lastClickedButton;
 
     ObservableList<Tasks> taskData = FXCollections.observableArrayList();
 
@@ -56,12 +59,10 @@ public class weekshcedulecontroller {
             list.add(taskText + "," + startText + "," + endsText + "," + durationText);
         }
         DataStore.writeweek(list, date.get());
-        showMessage("Saved");
     }
 
     @FXML
     public void initialize() {
-        setDate("Monday");
         date.addListener((observable, oldValue, newValue) -> {
             getdata(date.getValue());
         });
@@ -92,8 +93,13 @@ public class weekshcedulecontroller {
             Spinner<Integer> startMinuteSpinner = new Spinner<>(0, 59, Integer.parseInt(start[1]));
             Spinner<Integer> endHourSpinner = new Spinner<>(0, 23, Integer.parseInt(ends[0]));
             Spinner<Integer> endMinuteSpinner = new Spinner<>(0, 59, Integer.parseInt(ends[1]));
+            TextField task=new TextField(line[0]);
 
-            Tasks newTask = new Tasks(new TextField(line[0]),startHourSpinner, startMinuteSpinner, endHourSpinner, endMinuteSpinner, line[3]);
+            task.textProperty().addListener((observableValue, string, t1) -> {
+                changed=true;
+            } );
+
+            Tasks newTask = new Tasks(task,startHourSpinner, startMinuteSpinner, endHourSpinner, endMinuteSpinner, line[3]);
             taskData.add(newTask);
 
             addEvents(startHourSpinner, newTask);
@@ -117,20 +123,46 @@ public class weekshcedulecontroller {
         Spinner<Integer> startMinuteSpinner = new Spinner<>(0, 59, 0);
         Spinner<Integer> endHourSpinner = new Spinner<>(0, 23, 0);
         Spinner<Integer> endMinuteSpinner = new Spinner<>(0, 59, 0);
+        TextField task=new TextField();
 
-        Tasks newTask = new Tasks(new TextField(),startHourSpinner, startMinuteSpinner, endHourSpinner, endMinuteSpinner, "");
+        Tasks newTask = new Tasks(task,startHourSpinner, startMinuteSpinner, endHourSpinner, endMinuteSpinner, "");
         taskData.add(newTask);
 
         addEvents(startHourSpinner, newTask);
         addEvents(startMinuteSpinner, newTask);
         addEvents(endHourSpinner, newTask);
         addEvents(endMinuteSpinner, newTask);
+        task.textProperty().addListener((observableValue, string, t1) -> {
+            changed=true;
+        } );
     }
 
 
     @FXML
     protected void cancel(ActionEvent event) {
         try {
+            if(changed){
+                ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+                ButtonType dontSaveButtonType = new ButtonType("Don't Save", ButtonBar.ButtonData.NO);
+                ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Save Changes");
+                alert.setHeaderText("Do you want to save changes?");
+                alert.setContentText("Choose your option.");
+
+                alert.getButtonTypes().setAll(saveButtonType, dontSaveButtonType, cancelButtonType);
+
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.isPresent()) {
+                    if (result.get() == saveButtonType) {
+                        save();
+                    } else if (result.get() == cancelButtonType) {
+                        return;
+                    }
+                }
+            }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
             Scene scene = new Scene(loader.load());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -160,17 +192,45 @@ public class weekshcedulecontroller {
         long minutes = duration.toMinutes() % 60;
 
         task.setDuration(hours + ":" + minutes);
-    }
-    private void showMessage(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        changed=true;
     }
     @FXML
     protected void daychanged(ActionEvent event){
-        save();
+        if(changed){
+
+                ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+                ButtonType dontSaveButtonType = new ButtonType("Don't Save", ButtonBar.ButtonData.NO);
+                ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Save Changes");
+                alert.setHeaderText("Do you want to save changes in "+date.get()+"?");
+                alert.setContentText("Choose your option.");
+
+                alert.getButtonTypes().setAll(saveButtonType, dontSaveButtonType, cancelButtonType);
+
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.isPresent()) {
+                    if (result.get() == saveButtonType) {
+                        save();
+                    } else if (result.get() == cancelButtonType) {
+                        return;
+                    }
+                }
+
+
+        }
+        Button clickedButton = (Button) event.getSource();
+
+        if (lastClickedButton != null) {
+            lastClickedButton.getStyleClass().remove("button-clicked");
+        }
+
+        clickedButton.getStyleClass().add("button-clicked");
+
+        lastClickedButton = clickedButton;
+
         taskData.clear();
         setDate(((Button)event.getSource()).getText());
     }
